@@ -8,7 +8,7 @@ Stan is mainly a probabilistic programming language to perform Bayesian inferenc
 
 We first have to install RStan inside R. The RStan package is named "rstan" and has only a few dependencies that will also need to be installed. The command to install rstan is:
 
-  install.packages("rstan")
+    install.packages("rstan")
 
 ## Part 3: Creating the STAN file
 STAN files are made up of three necessary blocks (data, parameters, model) and additional optional blocks (functions, transformed data, etc). We won't explore all optional blocks in this workshop.
@@ -16,12 +16,12 @@ STAN files are made up of three necessary blocks (data, parameters, model) and a
 ### Step 1: Create the actual file
 Option 1:
 
-    If your RStudio version is new enough, there is an option to create a STAN file using the new document shortcut.
+  If your RStudio version is new enough, there is an option to create a STAN file using the new document shortcut.
   
   
 Option 2:
 
-    Alternatively, you can just create a blank file in R, notepad, etc, and save the file with a .stan extension.
+  Alternatively, you can just create a blank file in R, notepad, etc, and save the file with a .stan extension.
 
 ### Step 2: Write the data block
 The data block is where you declare the observed data (think of declaring variables in C). In the stan file, you need to specify the type of data (int, vector, real, etc), the constraints (lower bounds and upper bounds), and size (Y is a vector of size N). Everything must be explicitly written. An example of this is 
