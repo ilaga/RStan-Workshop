@@ -14,12 +14,12 @@ We first have to install RStan inside R. The RStan package is named "rstan" and 
 STAN files are made up of three necessary blocks (data, parameters, model) and additional optional blocks (functions, transformed data, etc). We won't explore all optional blocks in this workshop.
 
 ### Step 1: Create the actual file
-Option 1:
+#### Option 1:
 
   If your RStudio version is new enough, there is an option to create a STAN file using the new document shortcut.
   
   
-Option 2:
+#### Option 2:
 
   Alternatively, you can just create a blank file in R, notepad, etc, and save the file with a .stan extension.
 
