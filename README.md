@@ -66,7 +66,7 @@ Finally, we can declare the priors and likelihoods for our data and parameters. 
   
 Ultimately, most of the model block is used to calculate the log-posterior. There are two ways to do this in Stan: (1) using the "~" notation or (2) using the "+=" notation.
 
-Using the "~" notation should feel familiar since this is how we write in on paper. If you can say that your data comes from a known distribution, you can use "~". In the model block above, "mu ~ normal(0, 10);" translates to "evaluate the log-likelihood of my sampled mu according to the normal distribution with mean zero and standard deviation 10 and add this to my posterior log-likelihood. Note that even though "y" is a vector, we can still use "y ~ normal(mu, sigma);" STAN allows vectorization which greatly decreases computation time.
+Using the "\~" notation should feel familiar since this is how we write in on paper. If you can say that your data comes from a known distribution, you can use "\~". In the model block above, "mu ~ normal(0, 10);" translates to "evaluate the log-likelihood of my sampled mu according to the normal distribution with mean zero and standard deviation 10 and add this to my posterior log-likelihood. Note that even though "y" is a vector, we can still use "y ~ normal(mu, sigma);" STAN allows vectorization which greatly decreases computation time.
 
 However, the target += -log(sigma) might look a little weird. If we don't want to specify a distribution for a parameter (sigma in this case), we can increment the target on the log-scale. This statement translates to "add -log(sigma) to the posterior log-likelihood."
 
