@@ -10,6 +10,8 @@ We first have to install RStan inside R. Detailed instructions can be found at h
 
     install.packages("rstan")
 
+I run Rstan on R version 3.6.3 because I've had problems with R version 4.0. If you are using R version 4.0, your session may crash occasionally. There are several forums that discuss possible issues, but I've never found a solution for myself.
+
 ## Part 3: Creating the STAN file
 STAN files are made up of three necessary blocks (data, parameters, model) and additional optional blocks (functions, transformed data, etc). We won't explore all optional blocks in this workshop.
 
@@ -24,7 +26,7 @@ STAN files are made up of three necessary blocks (data, parameters, model) and a
   Alternatively, you can just create a blank file in R, notepad, etc, and save the file with a .stan extension.
 
 ### Step 2: Write the data block
-The data block is where you declare the observed data (think of declaring variables in C). In the stan file, you need to specify the type of data (int, vector, real, etc), the constraints (lower bounds and upper bounds), and size (Y is a vector of size N). Everything must be explicitly written. An example of this is 
+The data block is where you declare the observed data (think of declaring variables in C). In a linear regression model, this is your response Y, your covariates X, and the dimension of Y and X. In the stan file, you need to specify the type of data (int, vector, real, etc), the constraints (lower bounds and upper bounds), and size (Y is a vector of size N). Everything must be explicitly written. An example where your only data is a vector y which has N components is given by:
 
 
     data {
@@ -37,7 +39,7 @@ The data block is where you declare the observed data (think of declaring variab
   
 
 ### Step 3: Write the parameters block
-Next, we declare the parameters that we want sampled. For example, if we assume our data comes from a normal distribution with mean mu and standard deviation sigma, then our parameters section would look something like: 
+Next, we declare the parameters that we want sampled. For example, if we assume our data y comes from a normal distribution with mean mu and standard deviation sigma where both mu and sigma are unknown, then our parameters section would look something like: 
 
     parameters {
 
@@ -47,7 +49,7 @@ Next, we declare the parameters that we want sampled. For example, if we assume 
 
     }
   
-There are a few things to remember when declaring parameters. First, parameters cannot be discrete. Second, if a parameter has an upper or lower bound, this must be specified.
+There are a few things to remember when declaring parameters. First, parameters cannot be discrete. Stan relies on Hamiltonian Monte Carlo, and the gradient evaluation can not be calculate for discrete parameters. Second, if a parameter has an upper or lower bound, this must be specified. Even though it may be obvious to you that sigma is positive, Stan may try to sample negative values.
 
 ### Step 4: Write the model block
 Finally, we can declare the priors and likelihoods for our data and parameters. What is nice about Stan is that the code looks very similar to how you would naturally discuss priors and likelihoods in a Bayesian framework. Continuing with the normal example, we might say something like, "the mean mu has a normal prior and sigma has an inverse prior. The data is normally distributed." This translates nicely to STAN code as follows: 
@@ -62,7 +64,11 @@ Finally, we can declare the priors and likelihoods for our data and parameters. 
 
     }
   
-Using the "~" notation should feel familiar since this is how we write in on paper. However, the target += -log(sigma) might look a little weird. If we don't want to specify a distribution for a parameter (sigma in this case), we can increment the target on the log-scale. Finally, note that even though "y" is a vector, we can still use "y ~ normal(mu, sigma);" STAN allows vectorization, which greatly decreases computation time.
+Ultimately, most of the model block is used to calculate the log-posterior. There are two ways to do this in Stan: (1) using the "~" notation or (2) using the "+=" notation.
+
+Using the "~" notation should feel familiar since this is how we write in on paper. If you can say that your data comes from a known distribution, you can use "~". In the model block above, "mu ~ normal(0, 10);" translates to "evaluate the log-likelihood of my sampled mu according to the normal distribution with mean zero and standard deviation 10 and add this to my posterior log-likelihood. Note that even though "y" is a vector, we can still use "y ~ normal(mu, sigma);" STAN allows vectorization which greatly decreases computation time.
+
+However, the target += -log(sigma) might look a little weird. If we don't want to specify a distribution for a parameter (sigma in this case), we can increment the target on the log-scale. This statement translates to "add -log(sigma) to the posterior log-likelihood."
 
 
 ## Part 3: Creating the data list in R
@@ -89,6 +95,6 @@ Now that we have a stan file and a data list, we can call out model using the "s
 
     )
   
-Other important arguments are chains (how many MCMC chains should be run), warmup (number of burn-in samples), iter (total number of MCMC iteration), and cores (if running in parallel, how many chains should be run concurrently). However, there are lots of more options which can help with debugging and running the model.
+Other important arguments are chains (how many MCMC chains should be run), warmup (number of burn-in samples), iter (total number of MCMC iteration), and cores (if running in parallel, how many chains should be run concurrently). However, there are many more options which can help with debugging and running the model.
 
 
