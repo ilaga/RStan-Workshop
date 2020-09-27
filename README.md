@@ -10,7 +10,6 @@ We first have to install RStan inside R. Detailed instructions can be found at h
 
     install.packages("rstan")
 
-I run Rstan on R version 3.6.3 because I've had problems with R version 4.0. If you are using R version 4.0, your session may crash occasionally. There are several forums that discuss possible issues, but I've never found a solution for myself.
 
 ## Part 3: Creating the STAN file
 STAN files are made up of three necessary blocks (data, parameters, model) and additional optional blocks (functions, transformed data, etc). We won't explore all optional blocks in this workshop.
