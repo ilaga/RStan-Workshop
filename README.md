@@ -1,6 +1,8 @@
 # RStan-Workshop
 This is a short introduction to using RStan. Two files are of special interest: the Intro_to_rstan.html file is a short walkthrough of a few examples, and the rstan_presentation.R includes code for running all of the models mentioned in the html file. Stan files are included for every model as well. The official page for rstan is found at https://mc-stan.org/rstan/. The reference manual can be found at https://mc-stan.org/docs/2_24/reference-manual/index.html.
 
+The main documents to be aware of for this presentation are rstan_pp, Simple_Model_Analysis.R, Default_Norm.stan, and Intro_to_rstan
+
 ## Part 1: What is RStan
 Stan is mainly a probabilistic programming language to perform Bayesian inference with MCMC sampling via Hamiltonian Monte Carlo with a No-U-Turn Sampler (HMC-NUTS). Rstan is just a user interface to call Stan from R. Stan also has version for Python, shell, MATLAB, and others, which we won't discuss here. RStan is similar to Bayesian inference through BUGS. In order to perform the MCMC sampling, you provide R with a a STAN file (which specifies the model) and an R list with the input data. Models are written in STAN by specifying the priors for the parameters and the likelihoods for the data.
 
